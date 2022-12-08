@@ -18,16 +18,16 @@ jobs:
         with:
           go-version: '~1.19'
 
-      - name: "Run GoReleaser (Build snapshot)"
+      - name: Run GoReleaser (Build snapshot)
         uses: goreleaser/goreleaser-action@v3
-        if: !startsWith(github.ref, 'refs/tags/')
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
         with:
           version: latest
           args: --snapshot --rm-dist
 
-      - name: "Run GoReleaser (Release)"
+      - name: Run GoReleaser (Release)
         uses: goreleaser/goreleaser-action@v3
-        if: startsWith(github.ref, 'refs/tags/')
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         with:
           version: latest
           args: release --rm-dist
