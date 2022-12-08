@@ -21,5 +21,3 @@ checksum:
   name_template: 'checksums.txt'
 changelog:
   skip: true
-release:
-  disable: true
