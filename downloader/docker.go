@@ -3,6 +3,7 @@ package downloader
 import (
 	"archive/tar"
 	"bytes"
+	"fmt"
 	docker "github.com/fsouza/go-dockerclient"
 	"github.com/ngyewch/apt-offline/resources"
 	"io/fs"
@@ -57,7 +58,7 @@ func (d *Downloader) buildImage() error {
 	return nil
 }
 
-func (d *Downloader) Download(downloadDir string, packageNames []string) error {
+func (d *Downloader) Download(downloadDir string, arch string, packageNames []string) error {
 	err := os.MkdirAll(downloadDir, 0755)
 	if err != nil && !os.IsExist(err) {
 		return err
@@ -72,6 +73,9 @@ func (d *Downloader) Download(downloadDir string, packageNames []string) error {
 			AttachStdout: true,
 			AttachStderr: true,
 			Cmd:          packageNames,
+			Env:          []string{
+				fmt.Sprintf("ARCH=%s", arch),
+			},
 		},
 		HostConfig: &docker.HostConfig{
 			AutoRemove: true,

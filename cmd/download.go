@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/ngyewch/apt-offline/downloader"
 	"github.com/ngyewch/apt-offline/dpkg"
 	"github.com/spf13/cobra"
@@ -37,7 +36,12 @@ func download(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	err = d.Download(downloadDir, args)
+	arch, err := cmd.Flags().GetString("arch")
+	if err != nil {
+		return err
+	}
+
+	err = d.Download(downloadDir, arch, args)
 	if err != nil {
 		return err
 	}
@@ -68,8 +72,7 @@ func download(cmd *cobra.Command, args []string) error {
 			}
 			parts := strings.Split(dirEntry.Name()[0:len(dirEntry.Name())-4], "_")
 			packageStatus := packageStatuses.FindPackageStatus(parts[0])
-			if (packageStatus != nil) && (packageStatus.Status == "install ok installed") {
-				fmt.Printf("%s exists\n", packageStatus.Package)
+			if (packageStatus != nil) && (packageStatus.Status == "install ok installed") && (packageStatus.Architecture == arch) {
 				err = os.Remove(filepath.Join(downloadDir, dirEntry.Name()))
 				if err != nil {
 					return err
@@ -85,6 +88,9 @@ func init() {
 	rootCmd.AddCommand(downloadCmd)
 
 	downloadCmd.Flags().String("download-dir", "", "Download directory.")
+	downloadCmd.Flags().String("arch", "", "Architecture.")
 	downloadCmd.Flags().String("dpkg-status", "", "Path to /var/lib/dpkg/status file.")
+
 	_ = downloadCmd.MarkFlagRequired("download-dir")
+	_ = downloadCmd.MarkFlagRequired("arch")
 }
