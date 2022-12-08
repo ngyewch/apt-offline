@@ -13,7 +13,7 @@ import (
 var (
 	rootCmd = &cobra.Command{
 		Use:   fmt.Sprintf("%s [flags]", appName),
-		Short: "spd CLI",
+		Short: "apt-offline",
 		RunE:  help,
 	}
 )

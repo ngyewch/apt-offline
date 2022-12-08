@@ -3,6 +3,7 @@ module github.com/ngyewch/apt-offline
 go 1.19
 
 require (
+	github.com/Masterminds/semver/v3 v3.2.0
 	github.com/fsouza/go-dockerclient v1.9.0
 	github.com/go-eden/slf4go v1.1.2
 	github.com/ngyewch/go-clibase v1.0.1
