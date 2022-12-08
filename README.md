@@ -1,5 +1,10 @@
 # apt-offline
 
+Offline package management for Debian based systems. It can be used to download packages and their dependencies to be installed later on a disconnected machine.
+
+Pre-requisites:
+* Docker
+
 ```
 $ apt-offline download -h
 Download
