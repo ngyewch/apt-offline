@@ -2,12 +2,15 @@ package downloader
 
 import (
 	"archive/tar"
+	"bytes"
 	"io"
 	"io/fs"
+	"strings"
+	"text/template"
 	"time"
 )
 
-func createTar(tr *tar.Writer, filesystem fs.FS) error {
+func createTar(tr *tar.Writer, filesystem fs.FS, vars any) error {
 	return fs.WalkDir(filesystem, ".", func(path string, entry fs.DirEntry, err error) error {
 		if path == "." {
 			return nil
@@ -26,6 +29,34 @@ func createTar(tr *tar.Writer, filesystem fs.FS) error {
 				AccessTime: t,
 				ChangeTime: t,
 			})
+			if err != nil {
+				return err
+			}
+		} else if strings.HasSuffix(path, ".tmpl") {
+			tmpl, err := template.New(path).ParseFS(filesystem, path)
+			if err != nil {
+				return err
+			}
+			outputBuf := bytes.NewBuffer(nil)
+			err = tmpl.Execute(outputBuf, vars)
+			if err != nil {
+				return err
+			}
+			actualPath := path[0 : len(path)-5]
+			contentBytes := outputBuf.Bytes()
+			t := time.Now()
+			err = tr.WriteHeader(&tar.Header{
+				Name:       actualPath,
+				Size:       int64(len(contentBytes)),
+				Mode:       int64(fi.Mode()),
+				ModTime:    t,
+				AccessTime: t,
+				ChangeTime: t,
+			})
+			if err != nil {
+				return err
+			}
+			_, err = tr.Write(contentBytes)
 			if err != nil {
 				return err
 			}

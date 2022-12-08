@@ -27,6 +27,10 @@ func (d *Downloader) initDocker() error {
 	return nil
 }
 
+func (d *Downloader) getImageName() string {
+	return fmt.Sprintf("apt-offline/%s", d.image)
+}
+
 func (d *Downloader) buildImage() error {
 	inputBuf := bytes.NewBuffer(nil)
 	tr := tar.NewWriter(inputBuf)
@@ -36,7 +40,10 @@ func (d *Downloader) buildImage() error {
 		return err
 	}
 
-	err = createTar(tr, subFs)
+	vars := &Vars{
+		Image: d.image,
+	}
+	err = createTar(tr, subFs, vars)
 	if err != nil {
 		return err
 	}
@@ -47,7 +54,7 @@ func (d *Downloader) buildImage() error {
 	}
 
 	err = d.client.BuildImage(docker.BuildImageOptions{
-		Name:         "apt-offline:latest",
+		Name:         d.getImageName(),
 		InputStream:  inputBuf,
 		OutputStream: os.Stdout,
 	})
@@ -69,11 +76,11 @@ func (d *Downloader) Download(downloadDir string, arch string, packageNames []st
 	}
 	container, err := d.client.CreateContainer(docker.CreateContainerOptions{
 		Config: &docker.Config{
-			Image:        "apt-offline:latest",
+			Image:        d.getImageName(),
 			AttachStdout: true,
 			AttachStderr: true,
 			Cmd:          packageNames,
-			Env:          []string{
+			Env: []string{
 				fmt.Sprintf("ARCH=%s", arch),
 			},
 		},

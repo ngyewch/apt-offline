@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM {{.Image}}
 WORKDIR /workspace
 COPY docker-entrypoint.sh .
 RUN chmod a+x docker-entrypoint.sh

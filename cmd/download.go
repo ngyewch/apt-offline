@@ -19,13 +19,6 @@ var (
 )
 
 func download(cmd *cobra.Command, args []string) error {
-	d := downloader.NewDownloader()
-
-	err := d.Init()
-	if err != nil {
-		return err
-	}
-
 	dpkgStatus, err := cmd.Flags().GetString("dpkg-status")
 	if err != nil {
 		return err
@@ -36,7 +29,19 @@ func download(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	image, err := cmd.Flags().GetString("docker-image")
+	if err != nil {
+		return err
+	}
+
 	arch, err := cmd.Flags().GetString("arch")
+	if err != nil {
+		return err
+	}
+
+	d := downloader.NewDownloader(image)
+
+	err = d.Init()
 	if err != nil {
 		return err
 	}
@@ -87,10 +92,12 @@ func download(cmd *cobra.Command, args []string) error {
 func init() {
 	rootCmd.AddCommand(downloadCmd)
 
-	downloadCmd.Flags().String("download-dir", "", "Download directory.")
-	downloadCmd.Flags().String("arch", "", "Architecture.")
+	downloadCmd.Flags().String("download-dir", "", "Download directory (REQUIRED).")
+	downloadCmd.Flags().String("docker-image", "", "Docker image (REQUIRED).")
+	downloadCmd.Flags().String("arch", "", "Architecture (REQUIRED).")
 	downloadCmd.Flags().String("dpkg-status", "", "Path to /var/lib/dpkg/status file.")
 
 	_ = downloadCmd.MarkFlagRequired("download-dir")
+	_ = downloadCmd.MarkFlagRequired("docker-image")
 	_ = downloadCmd.MarkFlagRequired("arch")
 }
