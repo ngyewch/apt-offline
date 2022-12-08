@@ -26,5 +26,6 @@ $ apt-offline download \
     --download-dir build/download \
     --docker-image debian:stretch \
     --arch armhf \
-    --dpkg-status testdata/var/lib/dpkg/status alsa-utils
+    --dpkg-status testdata/var/lib/dpkg/status \
+    alsa-utils
 ```
