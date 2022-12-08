@@ -62,7 +62,7 @@ func download(cmd *cobra.Command, args []string) error {
 		}
 		parts := strings.Split(dirEntry.Name()[0:len(dirEntry.Name())-4], "_")
 		packageStatus := packageStatuses.FindPackageStatus(parts[0])
-		if packageStatus != nil {
+		if (packageStatus != nil) && (packageStatus.Status == "install ok installed") {
 			fmt.Printf("%s exists\n", packageStatus.Package)
 			err = os.Remove(filepath.Join(downloadDir, dirEntry.Name()))
 			if err != nil {
