@@ -8,6 +8,7 @@ import (
 	"github.com/ngyewch/apt-offline/resources"
 	"io/fs"
 	"os"
+	"os/user"
 	"path/filepath"
 )
 
@@ -74,6 +75,12 @@ func (d *Downloader) Download(downloadDir string, arch string, packageNames []st
 	if err != nil {
 		return err
 	}
+
+	u, err := user.Current()
+	if err != nil {
+		return err
+	}
+
 	container, err := d.client.CreateContainer(docker.CreateContainerOptions{
 		Config: &docker.Config{
 			Image:        d.getImageName(),
@@ -82,6 +89,8 @@ func (d *Downloader) Download(downloadDir string, arch string, packageNames []st
 			Cmd:          packageNames,
 			Env: []string{
 				fmt.Sprintf("ARCH=%s", arch),
+				fmt.Sprintf("UID=%s", u.Uid),
+				fmt.Sprintf("GID=%s", u.Gid),
 			},
 		},
 		HostConfig: &docker.HostConfig{
