@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	slog "github.com/go-eden/slf4go"
 	"github.com/ngyewch/apt-offline/common"
 	"github.com/ngyewch/go-clibase"
 	"github.com/spf13/cobra"
@@ -41,5 +40,5 @@ func init() {
 }
 
 func initConfig() {
-	slog.SetLevel(slog.InfoLevel)
+	// do nothing
 }
