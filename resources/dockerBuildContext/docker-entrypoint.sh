@@ -21,10 +21,10 @@ while [ : ]; do
   esac
 done
 
-if [ -f /etc/os-release ]; then
-  source /etc/os-release
-  if [ "${ID}" == "debian" ]; then
-    if [ "${ARCHIVED}" == "1" ]; then
+if [ "${ARCHIVED}" == "1" ]; then
+  if [ -f /etc/os-release ]; then
+    source /etc/os-release
+    if [ "${ID}" == "debian" ]; then
       cat <<EOT > /etc/apt/sources.list
 deb [trusted=yes] http://archive.debian.org/debian ${VERSION_CODENAME} main non-free contrib
 deb-src [trusted=yes] http://archive.debian.org/debian/ ${VERSION_CODENAME} main non-free contrib
