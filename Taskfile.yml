@@ -23,13 +23,11 @@ tasks:
   install-gomajor:
     cmds:
       - go install github.com/icholy/gomajor@v0.9.5
-      - asdf reshim golang
     status:
-      - asdf which gomajor
+      - rtx which gomajor
 
   install-go-mod-outdated:
     cmds:
       - go install github.com/psampaz/go-mod-outdated@v0.9.0
-      - asdf reshim golang
     status:
-      - asdf which go-mod-outdated
+      - rtx which go-mod-outdated
