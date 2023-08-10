@@ -29,7 +29,7 @@ func (d *Downloader) initDocker() error {
 }
 
 func (d *Downloader) getImageName() string {
-	return fmt.Sprintf("apt-offline/%s", d.image)
+	return fmt.Sprintf("apt-offline/%s", d.versionCodename)
 }
 
 func (d *Downloader) buildImage() error {
@@ -42,7 +42,8 @@ func (d *Downloader) buildImage() error {
 	}
 
 	vars := &Vars{
-		Image: d.image,
+		VersionCodename: d.versionCodename,
+		Archived:        d.archived,
 	}
 	err = createTar(tr, subFs, vars)
 	if err != nil {

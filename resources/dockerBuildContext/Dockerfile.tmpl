@@ -1,4 +1,7 @@
-FROM {{.Image}}
+FROM debian:{{.VersionCodename}}
+{{if .Archived}}
+COPY sources.list /etc/apt/sources.list
+{{end}}
 WORKDIR /workspace
 COPY docker-entrypoint.sh .
 RUN chmod a+x docker-entrypoint.sh

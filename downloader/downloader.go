@@ -3,17 +3,20 @@ package downloader
 import docker "github.com/fsouza/go-dockerclient"
 
 type Downloader struct {
-	image  string
-	client *docker.Client
+	versionCodename string
+	archived        bool
+	client          *docker.Client
 }
 
 type Vars struct {
-	Image string
+	VersionCodename string
+	Archived        bool
 }
 
-func NewDownloader(image string) *Downloader {
+func NewDownloader(versionCodename string, archived bool) *Downloader {
 	return &Downloader{
-		image: image,
+		versionCodename: versionCodename,
+		archived:        archived,
 	}
 }
 

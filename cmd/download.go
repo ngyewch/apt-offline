@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/ngyewch/apt-offline/downloader"
 	"github.com/ngyewch/apt-offline/dpkg"
 	"github.com/spf13/cobra"
@@ -29,7 +30,7 @@ func download(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	image, err := cmd.Flags().GetString("docker-image")
+	versionCodename, err := cmd.Flags().GetString("version-codename")
 	if err != nil {
 		return err
 	}
@@ -39,7 +40,12 @@ func download(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	d := downloader.NewDownloader(image)
+	archived, err := cmd.Flags().GetBool("archived")
+	if err != nil {
+		return err
+	}
+
+	d := downloader.NewDownloader(versionCodename, archived)
 
 	err = d.Init()
 	if err != nil {
@@ -82,6 +88,7 @@ func download(cmd *cobra.Command, args []string) error {
 				if err != nil {
 					return err
 				}
+				fmt.Printf("# removed %s\n", dirEntry.Name())
 			}
 		}
 	}
@@ -93,11 +100,12 @@ func init() {
 	rootCmd.AddCommand(downloadCmd)
 
 	downloadCmd.Flags().String("download-dir", "", "Download directory (REQUIRED).")
-	downloadCmd.Flags().String("docker-image", "", "Docker image (REQUIRED).")
+	downloadCmd.Flags().String("version-codename", "", "Debian version codename (REQUIRED).")
 	downloadCmd.Flags().String("arch", "", "Architecture (REQUIRED).")
 	downloadCmd.Flags().String("dpkg-status", "", "Path to /var/lib/dpkg/status file.")
+	downloadCmd.Flags().Bool("archived", false, "Archived mode.")
 
 	_ = downloadCmd.MarkFlagRequired("download-dir")
-	_ = downloadCmd.MarkFlagRequired("docker-image")
+	_ = downloadCmd.MarkFlagRequired("version-codename")
 	_ = downloadCmd.MarkFlagRequired("arch")
 }

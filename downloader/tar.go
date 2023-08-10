@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"io"
 	"io/fs"
+	"path/filepath"
 	"strings"
 	"text/template"
 	"time"
@@ -33,7 +34,7 @@ func createTar(tr *tar.Writer, filesystem fs.FS, vars any) error {
 				return err
 			}
 		} else if strings.HasSuffix(path, ".tmpl") {
-			tmpl, err := template.New(path).ParseFS(filesystem, path)
+			tmpl, err := template.New(filepath.Base(path)).ParseFS(filesystem, path)
 			if err != nil {
 				return err
 			}
