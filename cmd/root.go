@@ -2,10 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/ngyewch/apt-offline/common"
-	"github.com/ngyewch/go-clibase"
+	versionInfoCobra "github.com/ngyewch/go-versioninfo/cobra"
 	"github.com/spf13/cobra"
-	goVersion "go.hein.dev/go-version"
 	"os"
 )
 
@@ -34,9 +32,7 @@ func help(cmd *cobra.Command, args []string) error {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	clibase.AddVersionCmd(rootCmd, func() *goVersion.Info {
-		return common.VersionInfo
-	})
+	versionInfoCobra.AddVersionCmd(rootCmd, nil)
 }
 
 func initConfig() {
