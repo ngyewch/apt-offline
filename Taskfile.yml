@@ -13,21 +13,7 @@ tasks:
 
   dependencyUpdates:
     desc: Show dependency updates
-    deps: [ install-go-mod-outdated, install-gomajor ]
     cmds:
       - go mod download
       - go mod tidy
       - go list -u -m -json all | go-mod-outdated -update -direct
-      #- gomajor list
-
-  install-gomajor:
-    cmds:
-      - go install github.com/icholy/gomajor@v0.9.5
-    status:
-      - rtx which gomajor
-
-  install-go-mod-outdated:
-    cmds:
-      - go install github.com/psampaz/go-mod-outdated@v0.9.0
-    status:
-      - rtx which go-mod-outdated
