@@ -1,3 +1,4 @@
+version: 2
 project_name: apt-offline
 before:
   hooks:
@@ -23,4 +24,4 @@ archives:
 checksum:
   name_template: 'checksums.txt'
 changelog:
-  skip: true
+  disable: true
