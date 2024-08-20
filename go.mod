@@ -1,6 +1,6 @@
 module github.com/ngyewch/apt-offline
 
-go 1.22
+go 1.23
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
