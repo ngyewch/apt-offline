@@ -3,7 +3,7 @@ module github.com/ngyewch/apt-offline
 go 1.23
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/fsouza/go-dockerclient v1.12.0
 	github.com/urfave/cli/v2 v2.27.4
 )
