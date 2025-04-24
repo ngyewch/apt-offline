@@ -3,17 +3,17 @@ module github.com/ngyewch/apt-offline
 go 1.23
 
 require (
-	github.com/Masterminds/semver/v3 v3.3.0
-	github.com/fsouza/go-dockerclient v1.12.0
-	github.com/urfave/cli/v2 v2.27.4
+	github.com/Masterminds/semver/v3 v3.3.1
+	github.com/fsouza/go-dockerclient v1.12.1
+	github.com/urfave/cli/v2 v2.27.6
 )
 
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/containerd/log v0.1.0 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
-	github.com/docker/docker v27.1.2+incompatible // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
+	github.com/docker/docker v27.5.1+incompatible // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
@@ -31,5 +31,5 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
-	golang.org/x/sys v0.23.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
 )
