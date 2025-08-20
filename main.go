@@ -1,25 +1,22 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
-	"time"
 
 	"github.com/ngyewch/apt-offline/downloader"
 	"github.com/ngyewch/apt-offline/dpkg"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 var (
-	version         string
-	commit          string
-	commitTimestamp string
+	version string
 
-	flagDownloadDir = &cli.PathFlag{
+	flagDownloadDir = &cli.StringFlag{
 		Name:     "download-dir",
 		Usage:    "download directory",
 		Required: true,
@@ -34,7 +31,7 @@ var (
 		Usage:    "architecture",
 		Required: true,
 	}
-	flagDpkgStatus = &cli.PathFlag{
+	flagDpkgStatus = &cli.StringFlag{
 		Name:  "dpkg-status",
 		Usage: "Path to /var/lib/dpkg/status file",
 	}
@@ -43,7 +40,7 @@ var (
 		Usage: "archived mode",
 	}
 
-	app = &cli.App{
+	app = &cli.Command{
 		Name:    "apt-offline",
 		Usage:   "apt-offline",
 		Version: version,
@@ -65,42 +62,18 @@ var (
 )
 
 func main() {
-	cli.VersionPrinter = func(cCtx *cli.Context) {
-		var parts []string
-		if version != "" {
-			parts = append(parts, fmt.Sprintf("version=%s", version))
-		}
-		if commit != "" {
-			parts = append(parts, fmt.Sprintf("commit=%s", commit))
-		}
-		if commitTimestamp != "" {
-			formattedCommitTimestamp := func(commitTimestamp string) string {
-				epochSeconds, err := strconv.ParseInt(commitTimestamp, 10, 64)
-				if err != nil {
-					return ""
-				}
-				t := time.Unix(epochSeconds, 0)
-				return t.Format(time.RFC3339)
-			}(commitTimestamp)
-			if formattedCommitTimestamp != "" {
-				parts = append(parts, fmt.Sprintf("commitTimestamp=%s", formattedCommitTimestamp))
-			}
-		}
-		fmt.Println(strings.Join(parts, " "))
-	}
-
-	err := app.Run(os.Args)
+	err := app.Run(context.Background(), os.Args)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func doDownload(cCtx *cli.Context) error {
-	downloadDir := flagDownloadDir.Get(cCtx)
-	versionCodename := flagVersionCodename.Get(cCtx)
-	arch := flagArch.Get(cCtx)
-	dpkgStatus := flagDpkgStatus.Get(cCtx)
-	archived := flagArchived.Get(cCtx)
+func doDownload(ctx context.Context, cmd *cli.Command) error {
+	downloadDir := cmd.String(flagDownloadDir.Name)
+	versionCodename := cmd.String(flagVersionCodename.Name)
+	arch := cmd.String(flagArch.Name)
+	dpkgStatus := cmd.String(flagDpkgStatus.Name)
+	archived := cmd.Bool(flagArchived.Name)
 
 	d := downloader.NewDownloader(versionCodename, archived)
 
@@ -109,7 +82,7 @@ func doDownload(cCtx *cli.Context) error {
 		return err
 	}
 
-	err = d.Download(downloadDir, arch, cCtx.Args().Slice())
+	err = d.Download(downloadDir, arch, cmd.Args().Slice())
 	if err != nil {
 		return err
 	}
