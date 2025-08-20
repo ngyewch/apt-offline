@@ -4,12 +4,13 @@ import (
 	"archive/tar"
 	"bytes"
 	"fmt"
-	docker "github.com/fsouza/go-dockerclient"
-	"github.com/ngyewch/apt-offline/resources"
 	"io/fs"
 	"os"
 	"os/user"
 	"path/filepath"
+
+	docker "github.com/fsouza/go-dockerclient"
+	"github.com/ngyewch/apt-offline/resources"
 )
 
 func (d *Downloader) initDocker() error {

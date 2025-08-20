@@ -2,10 +2,11 @@ package dpkg
 
 import (
 	"fmt"
-	"github.com/Masterminds/semver/v3"
 	"io"
 	"strconv"
 	"strings"
+
+	"github.com/Masterminds/semver/v3"
 )
 
 type PackageStatuses struct {

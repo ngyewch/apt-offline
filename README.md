@@ -1,6 +1,7 @@
 # apt-offline
 
-Offline package management for Debian. It can be used to download packages and their dependencies to be installed later on a disconnected machine.
+Offline package management for Debian. It can be used to download packages and their dependencies to be installed later
+on a disconnected machine.
 
 ## Pre-requisites
 

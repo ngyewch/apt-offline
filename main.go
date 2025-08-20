@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/ngyewch/apt-offline/downloader"
-	"github.com/ngyewch/apt-offline/dpkg"
-	"github.com/urfave/cli/v2"
 	"log"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/ngyewch/apt-offline/downloader"
+	"github.com/ngyewch/apt-offline/dpkg"
+	"github.com/urfave/cli/v2"
 )
 
 var (
