@@ -13,6 +13,7 @@ tasks:
 
   dependencyUpdates:
     desc: Show dependency updates
+    aliases: [ outdated ]
     cmds:
       - go mod tidy
       - go list -u -m -json all | go-mod-outdated -update -direct
